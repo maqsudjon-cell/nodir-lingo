@@ -51,15 +51,11 @@ body{
 
 /* ---------- atmosphere ---------- */
 .aura{position:fixed;inset:0;z-index:-3;overflow:hidden;pointer-events:none}
-.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform}
-.b1{width:60vmax;height:60vmax;top:-26vmax;left:-18vmax;background:radial-gradient(circle at 30% 30%,var(--cyan),transparent 62%);animation:drift1 24s var(--ease) infinite alternate}
-.b2{width:52vmax;height:52vmax;top:-10vmax;right:-22vmax;background:radial-gradient(circle at 60% 40%,var(--indigo),transparent 64%);animation:drift2 30s var(--ease) infinite alternate}
-.b3{width:46vmax;height:46vmax;bottom:-22vmax;left:8vmax;background:radial-gradient(circle at 50% 50%,var(--teal),transparent 66%);opacity:.42;animation:drift3 27s var(--ease) infinite alternate}
-.b4{width:30vmax;height:30vmax;bottom:-6vmax;right:-6vmax;background:radial-gradient(circle at 50% 50%,var(--pink),transparent 68%);opacity:.30;animation:drift2 34s var(--ease) infinite alternate-reverse}
-
-@keyframes drift1{to{transform:translate(8vmax,6vmax) scale(1.12)}}
-@keyframes drift2{to{transform:translate(-7vmax,5vmax) scale(1.1)}}
-@keyframes drift3{to{transform:translate(6vmax,-7vmax) scale(1.15)}}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
+.b1{width:60vmax;height:60vmax;top:-26vmax;left:-18vmax;background:radial-gradient(circle at 30% 30%,var(--cyan),transparent 62%)}
+.b2{width:52vmax;height:52vmax;top:-10vmax;right:-22vmax;background:radial-gradient(circle at 60% 40%,var(--indigo),transparent 64%)}
+.b3{width:46vmax;height:46vmax;bottom:-22vmax;left:8vmax;background:radial-gradient(circle at 50% 50%,var(--teal),transparent 66%);opacity:.42}
+.b4{width:30vmax;height:30vmax;bottom:-6vmax;right:-6vmax;background:radial-gradient(circle at 50% 50%,var(--pink),transparent 68%);opacity:.30}
 
 /* grain + vignette */
 .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
@@ -68,7 +64,7 @@ body{
   background:radial-gradient(120% 90% at 50% 38%,transparent 55%,rgba(2,5,12,.55) 100%)}
 
 /* ---------- card ---------- */
-.wrap{width:100%;max-width:420px;position:relative;z-index:1;text-align:center;will-change:transform}
+.wrap{width:100%;max-width:420px;position:relative;z-index:1;text-align:center}
 
 .reveal{opacity:0;transform:translateY(18px);animation:reveal .8s var(--ease) forwards;animation-delay:var(--d,0s)}
 @keyframes reveal{to{opacity:1;transform:none}}
@@ -260,23 +256,8 @@ body{
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // subtle pointer parallax (desktop, motion-safe only)
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fine = matchMedia('(pointer: fine)').matches;
-  if(!reduce && fine){
-    const wrap = document.getElementById('wrap');
-    const aura = document.querySelector('.aura');
-    let raf;
-    addEventListener('pointermove', e=>{
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(()=>{
-        const x = (e.clientX / innerWidth - .5);
-        const y = (e.clientY / innerHeight - .5);
-        wrap.style.transform = `translate(${x*-7}px, ${y*-7}px)`;
-        aura.style.transform = `translate(${x*22}px, ${y*22}px)`;
-      });
-    });
-  }
+  // Pointer parallax removed for performance: it moved the full-screen blurred
+  // backdrop, forcing the browser to re-blur every glass button on each mouse-move.
 </script>
 </body>
 </html>
